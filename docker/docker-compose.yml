@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+    balancer:
+      container_name: nginx   
+      image: nginx:latest
+      links:
+        - web
+      ports:
+        - "8080:80"
+      #volumes:
+       # - /home/vitaliy/devops/docker/nginx/etc:/etc/nginx  
+
+    web:
+      build: .
+      links:
+        - db
+      container_name: apache2
+      volumes:
+        - /home/vitaliy/devops/docker/web/etc:/etc/apache2/sites-enabled
+        - /home/vitaliy/devops/docker/web/www:/var/www/site  
+
+    db:
+      image: percona:5.7
+      container_name: mysql57
+      environment:
+        MYSQL_ROOT_PASSWORD: 121212
+      #volumes:
+      #  - /home/vitaliy/devops/docker/mysql/configs/my.cnf:/etc/mysql/conf.d/custom.cnf
+      #  - /home/vitaliy/devops/docker/mysql/mysql:/var/lib/mysql     
